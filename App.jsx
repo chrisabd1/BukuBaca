@@ -1,11 +1,12 @@
+// App.js
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import BookList from './src/components/BookList';
 
 export default function App() {
   const [bookTitle, setBookTitle] = useState('');
-
   const [booksRead, setBooksRead] = useState([
-    { id: '1', title: 'Laskar Pelangi' }, // Example book already read
+    { id: '1', title: 'Laskar Pelangi' },
   ]);
 
   const handleAddBook = () => {
@@ -33,11 +34,7 @@ export default function App() {
 
       <Text style={styles.subTitle}>Daftar Buku yang Sudah Dibaca:</Text>
 
-      <FlatList
-        data={booksRead}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Text style={styles.bookItem}>• {item.title}</Text>}
-      />
+      <BookList books={booksRead} />
     </View>
   );
 }
@@ -68,9 +65,5 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 8,
     fontWeight: '600',
-  },
-  bookItem: {
-    fontSize: 16,
-    paddingVertical: 4,
   },
 });
