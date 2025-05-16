@@ -1,69 +1,21 @@
-// App.js
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import BookList from './src/components/BookList';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import HomeScreen from './src/screens/HomeScreen';
+import BookDetailsScreen from './src/screens/BookDetailsScreen';
+import AboutScreen from './src/screens/AboutScreen';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [bookTitle, setBookTitle] = useState('');
-  const [booksRead, setBooksRead] = useState([
-    { id: '1', title: 'Laskar Pelangi' },
-  ]);
-
-  const handleAddBook = () => {
-    if (bookTitle.trim() !== '') {
-      setBooksRead([
-        ...booksRead,
-        { id: Date.now().toString(), title: bookTitle },
-      ]);
-      setBookTitle('');
-    }
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>📚 BukuBaca</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Masukkan judul buku yang sudah dibaca"
-        value={bookTitle}
-        onChangeText={setBookTitle}
-      />
-
-      <Button title="Tambah Buku" onPress={handleAddBook} />
-
-      <Text style={styles.subTitle}>Daftar Buku yang Sudah Dibaca:</Text>
-
-      <BookList books={booksRead} />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'BukuBaca' }} />
+        <Stack.Screen name="BookDetails" component={BookDetailsScreen} options={{ title: 'Detail Buku' }} />
+        <Stack.Screen name="About" component={AboutScreen} options={{ title: 'Tentang Aplikasi' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    paddingTop: 60,
-    backgroundColor: '#f0f4f8',
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginBottom: 24,
-    textAlign: 'center',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#999',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 12,
-    backgroundColor: '#fff',
-  },
-  subTitle: {
-    fontSize: 18,
-    marginTop: 24,
-    marginBottom: 8,
-    fontWeight: '600',
-  },
-});

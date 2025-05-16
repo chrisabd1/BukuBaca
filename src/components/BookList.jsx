@@ -1,14 +1,15 @@
-// src/components/BookList.js
 import React from 'react';
-import { FlatList, Text, StyleSheet } from 'react-native';
+import { FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default function BookList({ books }) {
+export default function BookList({ books, onPressItem }) {
   return (
     <FlatList
       data={books}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <Text style={styles.bookItem}>• {item.title}</Text>
+        <TouchableOpacity onPress={() => onPressItem && onPressItem(item)}>
+          <Text style={styles.bookItem}>• {item.title}</Text>
+        </TouchableOpacity>
       )}
     />
   );
@@ -17,6 +18,6 @@ export default function BookList({ books }) {
 const styles = StyleSheet.create({
   bookItem: {
     fontSize: 16,
-    paddingVertical: 4,
+    paddingVertical: 8,
   },
 });
