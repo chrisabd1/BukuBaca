@@ -13,19 +13,7 @@ export default function BookDetailsScreen({ route }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f0f4f8',
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  bookTitle: {
-    fontSize: 20,
-  },
+  container: { flex: 1, padding: 24, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f0f4f8' },
+  title: { fontSize: 26, fontWeight: 'bold', marginBottom: 16 },
+  bookTitle: { fontSize: 20 },
 });
