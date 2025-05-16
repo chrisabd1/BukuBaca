@@ -2,11 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import BookList from '../components/BookList';
 
-export default function HomeScreen({ navigation, route }) {
-  // Receive books and setBooksRead via route.params or some state management
-  // For simplicity here, let's get them from route.params
-  const { books = [], onBookPress } = route.params || {};
-
+export default function HomeScreen({ books = [], onBookPress }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Daftar Buku yang Sudah Dibaca:</Text>

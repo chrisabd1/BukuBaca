@@ -6,9 +6,9 @@ export default function FormScreen({ navigation, route }) {
 
   const onAddBook = () => {
     if (bookTitle.trim() !== '') {
-      route.params?.addBook({ id: Date.now().toString(), title: bookTitle });
+      route.params?.addBook({ title: bookTitle });  // Send title only, backend generates id
       setBookTitle('');
-      navigation.navigate('HomeStack', { screen: 'Home' }); // navigate back to Home tab stack
+      navigation.navigate('HomeStack', { screen: 'Home' }); // Back to Home screen
     }
   };
 

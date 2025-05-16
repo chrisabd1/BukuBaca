@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -17,8 +17,9 @@ function HomeStackScreen({ books, onBookPress }) {
     <HomeStack.Navigator>
       <HomeStack.Screen
         name="Home"
-        component={HomeScreen}
-        initialParams={{ books, onBookPress }}
+        children={(props) => (
+          <HomeScreen {...props} books={books} onBookPress={onBookPress} />
+        )}
         options={{ title: 'Daftar Buku' }}
       />
       <HomeStack.Screen
@@ -31,14 +32,38 @@ function HomeStackScreen({ books, onBookPress }) {
 }
 
 export default function App() {
-  const [booksRead, setBooksRead] = useState([
-    { id: '1', title: 'Laskar Pelangi' }
-  ]);
-
+  const [booksRead, setBooksRead] = useState([]);
   const navigationRef = useRef();
 
-  const addBook = (book) => {
-    setBooksRead((prevBooks) => [...prevBooks, book]);
+  // Fetch books from mockapi.io
+  useEffect(() => {
+    fetch('https://68271fe3397e48c91318b0a9.mockapi.io/api/book')
+      .then((res) => res.json())
+      .then((data) => {
+        setBooksRead(data);
+      })
+      .catch((err) => {
+        console.error('Failed to fetch books:', err);
+      });
+  }, []);
+
+  // Add book to mockapi.io via POST then update state
+  const addBook = async (book) => {
+    try {
+      const response = await fetch('https://68271fe3397e48c91318b0a9.mockapi.io/api/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: book.title,
+          image: book.image || '', // optional image, empty string if none
+          detail: book.detail || '', // optional detail, empty string if none
+        }),
+      });
+      const newBook = await response.json();
+      setBooksRead((prev) => [...prev, newBook]);
+    } catch (error) {
+      console.error('Failed to add book:', error);
+    }
   };
 
   return (
