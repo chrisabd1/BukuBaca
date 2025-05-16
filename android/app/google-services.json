@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "147679691655",
+    "project_id": "bukubaca-994b4",
+    "storage_bucket": "bukubaca-994b4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147679691655:android:a0bc89bc536dd5d6e28922",
+        "android_client_info": {
+          "package_name": "com.bukubaca"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh4BKcM_YtJ2v4GTCUhRwxsJ93mgNE4SQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

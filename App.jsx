@@ -4,10 +4,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import firestore from '@react-native-firebase/firestore';
+
 import HomeScreen from './src/screens/HomeScreen';
 import BookDetailsScreen from './src/screens/BookDetailsScreen';
 import FormScreen from './src/screens/FormScreen';
 import AboutScreen from './src/screens/AboutScreen';
+import EditBookScreen from './src/screens/EditBookScreen';
 
 const HomeStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,6 +30,11 @@ function HomeStackScreen({ books, onBookPress }) {
         component={BookDetailsScreen}
         options={{ title: 'Detail Buku' }}
       />
+      <HomeStack.Screen
+        name="EditBook"
+        component={EditBookScreen}
+        options={{ title: 'Edit Buku' }}
+      />
     </HomeStack.Navigator>
   );
 }
@@ -35,32 +43,33 @@ export default function App() {
   const [booksRead, setBooksRead] = useState([]);
   const navigationRef = useRef();
 
-  // Fetch books from mockapi.io
+  // Fetch books from Firebase Firestore
   useEffect(() => {
-    fetch('https://68271fe3397e48c91318b0a9.mockapi.io/api/book')
-      .then((res) => res.json())
-      .then((data) => {
-        setBooksRead(data);
-      })
-      .catch((err) => {
-        console.error('Failed to fetch books:', err);
-      });
+    const unsubscribe = firestore()
+      .collection('books')
+      .onSnapshot(
+        (querySnapshot) => {
+          const books = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setBooksRead(books);
+        },
+        (error) => {
+          console.error('Failed to fetch books:', error);
+        }
+      );
+
+    return () => unsubscribe();
   }, []);
 
-  // Add book to mockapi.io via POST then update state
   const addBook = async (book) => {
     try {
-      const response = await fetch('https://68271fe3397e48c91318b0a9.mockapi.io/api/book', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: book.title,
-          image: book.image || '', // optional image, empty string if none
-          detail: book.detail || '', // optional detail, empty string if none
-        }),
+      await firestore().collection('books').add({
+        title: book.title,
+        image: book.image || '',
+        detail: book.detail || '',
       });
-      const newBook = await response.json();
-      setBooksRead((prev) => [...prev, newBook]);
     } catch (error) {
       console.error('Failed to add book:', error);
     }

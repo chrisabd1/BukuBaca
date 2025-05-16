@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Button } from 'react-native';
 
-export default function BookDetailsScreen({ route }) {
+export default function BookDetailsScreen({ route, navigation }) {
   const { book } = route.params;
 
   return (
@@ -12,6 +12,13 @@ export default function BookDetailsScreen({ route }) {
         <Image source={{ uri: book.image }} style={styles.image} resizeMode="contain" />
       ) : null}
       <Text style={styles.detail}>{book.detail}</Text>
+
+      <View style={{ marginTop: 20 }}>
+        <Button
+          title="Edit Buku"
+          onPress={() => navigation.navigate('EditBook', { book })}
+        />
+      </View>
     </ScrollView>
   );
 }
